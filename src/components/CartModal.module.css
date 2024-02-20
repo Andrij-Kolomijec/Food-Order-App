@@ -1,0 +1,47 @@
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 30vw;
+  padding: 1rem;
+}
+
+.modal > * {
+  padding: 0 1rem 1rem 1rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart > h4 {
+  text-align: end;
+  margin-top: 1rem;
+}
+
+.actions > button {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+}
+
+.actions > span {
+  padding: 10px;
+}
+
+.buttons {
+  text-align: end;
+}
+
+.buttons > button {
+  margin-left: 1rem;
+  padding: 5px 10px;
+}
