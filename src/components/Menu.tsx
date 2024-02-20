@@ -1,9 +1,14 @@
-type Meal = {
+import classes from "./Menu.module.css";
+import { useContext } from "react";
+import CartContext from "../context/CartContext";
+
+export type Meal = {
   id: string;
   name: string;
   price: string;
   description: string;
   image: string;
+  quantity?: number;
 };
 
 type MenuProps = {
@@ -11,19 +16,30 @@ type MenuProps = {
 };
 
 export default function Menu({ meals }: MenuProps) {
+  const { addItemToCart } = useContext(CartContext);
+
   return (
-    <>
-      {meals.map((meal: Meal, index: number) => {
+    <div className={classes.menu}>
+      {meals.map((meal: Meal) => {
         return (
-          <div key={index}>
+          <div className={classes.meal} key={meal.id}>
             <img
+              title={meal.name}
+              draggable={false}
               src={import.meta.env.VITE_PORT_MAIN + meal.image}
               alt={meal.name + " photo"}
             />
-            <p>{meal.name}</p>
+            <div className={classes.info}>
+              <h2>{meal.name}</h2>
+              <p>{meal.price} €</p>
+              <p>{meal.description}</p>
+              <button onClick={() => addItemToCart!(meal.id)}>
+                Add to Cart
+              </button>
+            </div>
           </div>
         );
       })}
-    </>
+    </div>
   );
 }

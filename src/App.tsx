@@ -1,52 +1,25 @@
-// import { useEffect, useState } from "react";
-import Menu from "./components/Menu";
-import { fetchAvailableMeals } from "./http";
 import Header from "./components/Header";
-import { useFetch } from "./hooks/useFetch.js";
+import Menu, { Meal } from "./components/Menu";
+import { fetchAvailableMeals } from "./http";
+import { useFetch } from "./hooks/useFetch";
+import { CartContextProvider } from "./context/CartContext";
 
-// type Meal = {
-//   id: string;
-//   name: string;
-//   price: string;
-//   description: string;
-//   image: string;
-// };
+let fetchedData: Meal[];
 
-function App() {
-  const {
-    isFetching,
-    // error,
-    fetchedData: meals,
-    // setFetchedData: setMeals,
-  } = useFetch(fetchAvailableMeals, []);
+export default function App() {
+  const { isFetching, fetchedData: meals } = useFetch<Meal[]>(
+    fetchAvailableMeals,
+    []
+  );
 
-  // const [meals, setMeals] = useState<Meal[]>([]);
-  // const [isFetching, setIsFetching] = useState<boolean>(false);
-  // const [error, setError] = useState<object | undefined>();
-
-  // useEffect(() => {
-  //   async function fetchMeals() {
-  //     setIsFetching(true);
-  //     try {
-  //       const fetchedMeals = await fetchAvailableMeals();
-  //       setMeals(fetchedMeals);
-  //     } catch (error) {
-  //       setError({
-  //         message: error?.message || "Failed to fetch user meals.",
-  //       });
-  //     }
-  //     setIsFetching(false);
-  //   }
-
-  //   fetchMeals();
-  // }, []);
+  fetchedData = meals;
 
   return (
-    <div>
+    <CartContextProvider>
       <Header />
       {isFetching ? <p>Loading meals...</p> : <Menu meals={meals} />}
-    </div>
+    </CartContextProvider>
   );
 }
 
-export default App;
+export { fetchedData };

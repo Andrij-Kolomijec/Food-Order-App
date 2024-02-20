@@ -1,4 +1,4 @@
-export async function fetchAvailableMeals() {
+export async function fetchAvailableMeals<T>(): Promise<T> {
   const response = await fetch(import.meta.env.VITE_PORT_MEALS);
   const resData = await response.json();
 
