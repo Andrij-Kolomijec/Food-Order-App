@@ -10,10 +10,20 @@ body {
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
+button {
+  background-color: rgb(175, 114, 0);
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
+}
+
 button:hover {
   cursor: pointer;
+  background-color: rgb(236, 168, 40);
 }
 
 #root {
   margin: 0 10vw;
+  display: flex;
+  flex-direction: column;
 }

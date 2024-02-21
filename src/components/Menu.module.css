@@ -5,7 +5,8 @@
 }
 
 .meal {
-  border: 1px solid black;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -13,6 +14,7 @@
 
 .meal > img {
   width: 100%;
+  border-radius: 10px 10px 0 0;
 }
 
 .info {

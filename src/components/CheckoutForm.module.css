@@ -1,0 +1,43 @@
+.submitForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.submitForm > label,
+.submitForm > fieldset {
+  margin-top: 0.5rem;
+}
+
+.submitForm > fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-color: rgb(255, 192, 75);
+  border-radius: 5px;
+}
+
+.submitForm input {
+  background-color: rgb(255, 192, 75);
+  border: none;
+  border-radius: 5px;
+  padding: 1px 3px;
+}
+
+.submitForm > fieldset input {
+  margin: 5px;
+  accent-color: rgb(255, 192, 75);
+}
+
+.submitForm > fieldset input[type="checkbox"]:before {
+  accent-color: rgb(255, 192, 75);
+}
+
+.buttons {
+  align-self: flex-end;
+  margin-top: 1rem;
+}
+
+.buttons button {
+  margin-left: 2rem;
+  padding: 5px 10px;
+}
