@@ -21,7 +21,7 @@ app.get("/meals", async (req, res) => {
 });
 
 app.post("/orders", async (req, res) => {
-  const orderData = req.body.order;
+  const orderData = req.body;
 
   if (
     orderData === null ||
@@ -38,8 +38,8 @@ app.post("/orders", async (req, res) => {
     orderData.customer.name.trim() === "" ||
     orderData.customer.street === null ||
     orderData.customer.street.trim() === "" ||
-    orderData.customer["postal-code"] === null ||
-    orderData.customer["postal-code"].trim() === "" ||
+    orderData.customer.postal === null ||
+    orderData.customer.postal.trim() === "" ||
     orderData.customer.city === null ||
     orderData.customer.city.trim() === ""
   ) {

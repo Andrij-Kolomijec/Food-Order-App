@@ -9,10 +9,10 @@ export async function fetchAvailableMeals<T>(): Promise<T> {
   return resData;
 }
 
-export async function sendUserOrder(meals: object) {
+export async function sendUserOrder(data: string) {
   const response = await fetch(import.meta.env.VITE_PORT_ORDER, {
     method: "POST",
-    body: JSON.stringify({ meals }),
+    body: data,
     headers: {
       "Content-Type": "application/json",
     },
@@ -21,8 +21,10 @@ export async function sendUserOrder(meals: object) {
   const resData = await response.json();
 
   if (!response.ok) {
-    throw new Error("Failed to send user data.");
+    throw new Error(
+      resData.message || "Something went wrong, failed to send request."
+    );
   }
 
-  return resData.message;
+  return resData;
 }
