@@ -6,6 +6,7 @@ export type Cart = {
   items: Meal[];
   addItemToCart?: (id: string) => void;
   updateCartItemQuantity?: (id: string, amount: number) => void;
+  resetCart?: () => void;
 };
 
 type CartProps = {
@@ -13,14 +14,15 @@ type CartProps = {
 };
 
 type Action = {
-  type: string;
-  payload: { id: string; amount?: number };
+  type: "ADD_ITEM" | "UPDATE_ITEM" | "RESET_CART";
+  payload?: { id: string; amount?: number };
 };
 
 const CartContext = createContext<Cart>({
   items: [],
   addItemToCart: () => {},
   updateCartItemQuantity: () => {},
+  resetCart: () => {},
 });
 
 export default CartContext;
@@ -31,7 +33,7 @@ function reducer(state: Cart, action: Action) {
 
     // find out the index of the clicked item in cart
     const existingCartItemIndex = updatedItems.findIndex(
-      (cartItem) => cartItem.id === action.payload.id
+      (cartItem) => cartItem.id === action.payload!.id
     );
     const existingCartItem = updatedItems[existingCartItemIndex];
 
@@ -44,9 +46,9 @@ function reducer(state: Cart, action: Action) {
       updatedItems[existingCartItemIndex] = updatedItem;
       // otherwise if not
     } else {
-      const meal = fetchedData.find((meal) => meal.id === action.payload.id);
+      const meal = fetchedData.find((meal) => meal.id === action.payload!.id);
       updatedItems.push({
-        id: action.payload.id,
+        id: action.payload!.id,
         name: meal!.name,
         price: meal!.price,
         description: meal!.description,
@@ -63,14 +65,14 @@ function reducer(state: Cart, action: Action) {
   if (action.type === "UPDATE_ITEM") {
     const updatedItems = [...state.items];
     const updatedItemIndex = updatedItems.findIndex(
-      (item) => item.id === action.payload.id
+      (item) => item.id === action.payload!.id
     );
 
     const updatedItem = {
       ...updatedItems[updatedItemIndex],
     };
 
-    updatedItem.quantity! += action.payload.amount!;
+    updatedItem.quantity! += action.payload!.amount!;
 
     if (updatedItem.quantity! <= 0) {
       updatedItems.splice(updatedItemIndex, 1);
@@ -83,6 +85,14 @@ function reducer(state: Cart, action: Action) {
       items: updatedItems,
     };
   }
+
+  if (action.type === "RESET_CART") {
+    return {
+      ...state,
+      items: [],
+    };
+  }
+
   return state;
 }
 
@@ -97,10 +107,15 @@ export function CartContextProvider({ children }: CartProps) {
     dispatch({ type: "UPDATE_ITEM", payload: { id, amount } });
   }
 
+  function handleResetCart() {
+    dispatch({ type: "RESET_CART" });
+  }
+
   const contextValue = {
     items: state.items,
     addItemToCart: handleAddItemToCart,
     updateCartItemQuantity: handleUpdateCartItemQuantity,
+    resetCart: handleResetCart,
   };
 
   return (
