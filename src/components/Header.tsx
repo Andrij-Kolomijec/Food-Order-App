@@ -2,7 +2,7 @@ import { useRef, useContext } from "react";
 import classes from "./Header.module.css";
 import CartContext from "../context/CartContext";
 import CartModal from "./CartModal";
-import logo from "../assets/logo.jpg";
+import logo from "/logo.jpg";
 
 type Modal = {
   open: () => void;
@@ -22,20 +22,9 @@ export default function Header() {
     modal.current?.open();
   }
 
-  let modalActions = <button>Close</button>;
-
-  if (cartQuantity > 0) {
-    modalActions = (
-      <>
-        <button>Close</button>
-        <button>Checkout</button>
-      </>
-    );
-  }
-
   return (
     <>
-      <CartModal ref={modal} title="Your Cart" actions={modalActions} />
+      <CartModal ref={modal} title="Your Cart" quantity={cartQuantity} />
       <div className={classes.header}>
         <div>
           <img src={logo} alt="React Food Logo" />
