@@ -1,15 +1,14 @@
 import { useContext } from "react";
 import classes from "./CartModal.module.css";
 import CartContext from "../context/CartContext";
+import { currencyFormatter } from "../util/formatter";
 
 export default function Cart() {
   const { items, updateCartItemQuantity } = useContext(CartContext);
 
-  const totalPrice = items.reduce(
-    (acc, item) => acc + +item.price * item.quantity!,
-    0
-  );
-  const formattedTotalPrice = `$${totalPrice.toFixed(2)}`;
+  const totalPrice = items
+    .reduce((acc, item) => acc + +item.price * item.quantity!, 0)
+    .toFixed(2);
 
   return (
     <div className={classes.cart}>
@@ -23,7 +22,7 @@ export default function Cart() {
                 <li key={item.name} className={classes.item}>
                   <div>
                     <p>
-                      {item.name} - {item.quantity} x {item.price}€
+                      {item.name} - {item.quantity} x {item.price} €
                     </p>
                   </div>
                   <div className={classes.actions}>
@@ -43,7 +42,7 @@ export default function Cart() {
               );
             })}
           </ul>
-          <h4>Total: {formattedTotalPrice} €</h4>
+          <h4>Total: {currencyFormatter.format(+totalPrice)}</h4>
         </>
       )}
     </div>

@@ -1,6 +1,7 @@
 import classes from "./Menu.module.css";
 import { useContext } from "react";
 import CartContext from "../context/CartContext";
+import { currencyFormatter } from "../util/formatter";
 
 export type Meal = {
   id: string;
@@ -31,7 +32,7 @@ export default function Menu({ meals }: MenuProps) {
             />
             <div className={classes.info}>
               <h2>{meal.name}</h2>
-              <p>{meal.price} €</p>
+              <p>{currencyFormatter.format(+meal.price)}</p>
               <p>{meal.description}</p>
               <button onClick={() => addItemToCart!(meal.id)}>
                 Add to Cart
