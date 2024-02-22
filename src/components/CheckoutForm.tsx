@@ -1,7 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import classes from "./CheckoutForm.module.css";
 import CartContext from "../context/CartContext";
-import { sendUserOrder } from "../http";
+import { sendUserOrder } from "../util/http";
+import { currencyFormatter } from "../util/formatter";
 
 export type FormEvent =
   | React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -11,7 +12,13 @@ type Form = {
   onClose: (e: FormEvent) => void;
 };
 
+type Error = {
+  message: string;
+};
+
 export default function CheckoutForm({ onClose }: Form) {
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState<Error>();
   const { items, resetCart } = useContext(CartContext);
 
   const totalPrice = items
@@ -25,7 +32,6 @@ export default function CheckoutForm({ onClose }: Form) {
     const extras = formData.getAll("extras");
     const data = Object.fromEntries(formData.entries());
     data.extras = extras;
-    onClose(e);
 
     try {
       const responseData = JSON.stringify({
@@ -33,14 +39,18 @@ export default function CheckoutForm({ onClose }: Form) {
         customer: data,
         total: totalPrice,
       });
-      sendUserOrder(responseData);
+      setIsSending(true);
+      await sendUserOrder(responseData);
+      setIsSending(false);
       console.log("Order submitted:", responseData);
       alert("Order submitted successfully!");
       onClose(e);
       resetCart!();
     } catch (error) {
-      if (error instanceof Error)
+      if (error instanceof Error) {
+        setError(error);
         console.error("Error submitting order:", error.message);
+      }
       alert("Failed to submit order. Please try again later.");
     }
   }
@@ -53,7 +63,7 @@ export default function CheckoutForm({ onClose }: Form) {
         onSubmit={handleSubmit}
       >
         <h2>Checkout</h2>
-        <p>Total amount {totalPrice} €</p>
+        <p>Total amount {currencyFormatter.format(+totalPrice)}</p>
         <label htmlFor="name">Full Name</label>
         <input type="text" name="name" id="name" required />
         <label htmlFor="email">E-Mail Address</label>
@@ -80,8 +90,19 @@ export default function CheckoutForm({ onClose }: Form) {
           </div>
         </fieldset>
         <div className={classes.buttons}>
-          <button onClick={onClose}>Close</button>
-          <button type="submit">Submit Order</button>
+          {isSending || error ? (
+            <>
+              <h3>
+                {error ? "Failed to submit order." : "Submitting order..."}
+              </h3>
+              <button onClick={onClose}>Close</button>
+            </>
+          ) : (
+            <>
+              <button onClick={onClose}>Close</button>
+              <button type="submit">Submit Order</button>
+            </>
+          )}
         </div>
       </form>
     </>

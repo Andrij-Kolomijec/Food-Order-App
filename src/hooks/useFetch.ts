@@ -4,7 +4,7 @@ type FetchResult<T> = {
   isFetching: boolean;
   fetchedData: T;
   setFetchedData: React.Dispatch<React.SetStateAction<T>>;
-  error: object | undefined;
+  error: { message?: string } | undefined;
 };
 
 export function useFetch<T>(

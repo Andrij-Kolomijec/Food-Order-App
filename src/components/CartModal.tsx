@@ -40,7 +40,11 @@ const CartModal = forwardRef(({ title, quantity }: CartModalProps, ref) => {
   }
 
   return createPortal(
-    <dialog ref={dialog} className={classes.modal}>
+    <dialog
+      ref={dialog}
+      className={classes.modal}
+      onClose={() => setShowForm(false)}
+    >
       {!showForm ? (
         <>
           <h2>{title}</h2>
