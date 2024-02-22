@@ -18,6 +18,8 @@
 
 .header img {
   height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgb(175, 114, 0);
 }
 
 .header > div {

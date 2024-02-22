@@ -23,6 +23,18 @@
   padding: 1px 3px;
 }
 
+.submitForm input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 30px rgb(255, 192, 75) inset;
+}
+
+.submitForm input:valid {
+  background-color: rgb(194, 226, 14);
+}
+
+.submitForm input:invalid {
+  background-color: rgb(255, 192, 75);
+}
+
 .submitForm > fieldset input {
   margin: 5px;
   accent-color: rgb(255, 192, 75);
@@ -33,6 +45,8 @@
 }
 
 .buttons {
+  display: flex;
+  gap: 1rem;
   align-self: flex-end;
   margin-top: 1rem;
 }
